@@ -2,6 +2,7 @@ require 'colorize'
 require 'stringio'
 require 'rake'
 require 'rack/test'
+require 'rasti/web'
 
 require 'rasti/web/api_doc/request'
 require 'rasti/web/api_doc/response'
