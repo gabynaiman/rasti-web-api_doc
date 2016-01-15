@@ -23,6 +23,8 @@ Or install it yourself as:
 Add following task in your Rakefile
 
 ```ruby
+require 'rasti/web/api_doc'
+
 Rasti::Web::ApiDoc::Task.new(:doc) do |t|
   t.env = './environment.rb'
   t.app = 'MyApp::Web'
