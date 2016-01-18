@@ -24,7 +24,7 @@ module Rasti
           task name do
             ENV['RACK_ENV'] ||= 'test'
             require env if env
-            application = Object.const_get app
+            application = app.split('::').inject(Object) { |c,n| c.const_get(n) }
 
             Rasti::Web::ApiDoc.tracker = Tracker.new application.all_routes
 
