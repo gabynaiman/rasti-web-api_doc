@@ -1,6 +1,7 @@
 require 'colorize'
 require 'stringio'
 require 'rake'
+require 'rake/tasklib'
 require 'rack/test'
 require 'rasti/web'
 
