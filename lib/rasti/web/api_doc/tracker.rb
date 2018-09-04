@@ -5,9 +5,9 @@ module Rasti
 
         attr_reader :tracks        
 
-        def initialize(routes)
+        def initialize(routes_by_method)
           @tracks = Hash.new { |h,k| h[k] = {} }
-          routes.each do |method, routes| 
+          routes_by_method.each do |method, routes| 
             routes.each do |route| 
               tracks[method][route] = nil
             end
@@ -19,7 +19,7 @@ module Rasti
           res = Rasti::Web::ApiDoc::Response.new(*response)
 
           if !tracks[req.method][req.route]
-            STDOUT.puts "  #{req.method} #{req.route}".green
+            STDOUT.puts "  #{Colorin.green_500(req.method.ljust(6, ' ')).bold} #{req.route}"
             tracks[req.method][req.route] = [req, res]
           end
         end
@@ -32,7 +32,7 @@ module Rasti
           {
             endpoints: endpoints,
             documented: documented,
-            pending: pending.count,
+            pending: pending.values.map(&:count).sum,
             pending_list: pending
           }
         end

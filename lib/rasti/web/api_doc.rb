@@ -1,4 +1,4 @@
-require 'colorize'
+require 'colorin'
 require 'stringio'
 require 'rake'
 require 'rake/tasklib'

@@ -28,9 +28,7 @@ module Rasti
 
             Rasti::Web::ApiDoc.tracker = Tracker.new application.all_routes
 
-            # Hide test runner output
-            $stdout = StringIO.new
-            $stderr = StringIO.new
+            disable_test_runner_output
            
             at_exit do
               write_file
@@ -42,6 +40,11 @@ module Rasti
             $LOAD_PATH.unshift path
             Dir.glob(File.expand_path(pattern)).each { |f| require f }
           end
+        end
+
+        def disable_test_runner_output
+          $stdout = StringIO.new
+          $stderr = StringIO.new
         end
 
         def write_file
@@ -96,15 +99,16 @@ module Rasti
           STDOUT.puts "\nPending endpoints" unless summary[:pending_list].empty?
           summary[:pending_list].each do |method, routes|
             routes.each do |route|
-              STDOUT.puts "  #{method} #{route}".red
+              STDOUT.puts "  #{Colorin.amber_300(method.ljust(6, ' ')).bold} #{route}"
             end
           end
 
           STDOUT.puts
-          STDOUT.print "#{summary[:endpoints]} endpoints, "
-          STDOUT.print "#{summary[:documented]} documented".colorize(summary[:documented] == 0 ? :white : :green)
+          STDOUT.print Colorin.blue_a700("#{summary[:endpoints]} endpoints")
           STDOUT.print ", "
-          STDOUT.puts "#{summary[:pending]} pending".colorize(summary[:pending] == 0 ? :white : :red)
+          STDOUT.print Colorin.green_500("#{summary[:documented]} documented")
+          STDOUT.print ", "
+          STDOUT.puts Colorin.amber_300("#{summary[:pending]} pending")
         end
 
       end
