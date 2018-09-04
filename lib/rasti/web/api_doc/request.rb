@@ -36,9 +36,10 @@ module Rasti
         end
 
         def headers
-          {}.tap do |hash|
-            hash['Content-Type'] = env['CONTENT_TYPE'] if env['CONTENT_TYPE']
-          end
+          headers = env.select { |k,v| k.start_with?('HTTP_') || k == 'CONTENT_TYPE' }
+                       .map { |k,v| [k.sub(/^HTTP_/, '').split('_').map(&:capitalize).join('-'), v] }
+                       .sort
+          Hash[headers]
         end
 
         private
