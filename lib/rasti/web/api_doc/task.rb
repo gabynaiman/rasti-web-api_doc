@@ -35,16 +35,19 @@ module Rasti
               print_summary
             end
 
-            # Run all tests
-            STDOUT.puts 'Building documentation'
-            $LOAD_PATH.unshift path
-            Dir.glob(File.expand_path(pattern)).each { |f| require f }
+            run_all_tests
           end
         end
 
         def disable_test_runner_output
           $stdout = StringIO.new
           $stderr = StringIO.new
+        end
+
+        def run_all_tests
+          STDOUT.puts 'Building documentation'
+          $LOAD_PATH.unshift path
+          Dir.glob(File.expand_path(pattern)).each { |f| require f }
         end
 
         def write_file
